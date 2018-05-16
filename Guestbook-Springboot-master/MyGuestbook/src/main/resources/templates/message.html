@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+<body>
+	<nav th:replace="layout :: header"></nav>
+
+	<div class="container main-content list">
+		<div th:if="${success}"
+			class="row alert alert-success alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+			<span th:text="${success}"></span>
+		</div>
+
+		<form action="#" method="GET" novalidate="novalidate">
+			<p>Người gửi</p>
+			<select name="send">
+				<option value=""></option>
+				<option th:each="contact : ${users}" th:value="${contact.userName}"
+					th:selected="${contact.isSelected(lastselected)}"
+					th:text="${contact.userName}"></option>
+			</select>
+			<p></p>
+			<p>Người nhận</p>
+			<select name="receive">
+				<option th:each="contact : ${users}" th:value="${contact.userName}"
+					th:selected="${contact.isSelected(lastselectedreceive)}"
+					th:text="${contact.userName}"></option>
+
+			</select>
+			<p></p>
+			<button type="submit" class="btn btn-primary">Switch</button>
+			<br>
+			<br>
+			<p>Message</p>
+			<textarea name="mess" rows="5" cols="35"></textarea>
+			<br>
+			<button type="submit" class="btn btn-primary">Send</button>
+		</form>
+<!-- 		<form action="#" method="GET" novalidate="novalidate"> -->
+			
+<!-- 		</form> -->
+		<th:block th:if="${#lists.isEmpty(messages)}">
+			<h3></h3>
+		</th:block>
+
+		<th:block th:unless="${#lists.isEmpty(messages)}">
+			<div class="row">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>No</th>
+							<th>Message</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="contact,iterStat : ${messages}">
+							<td th:text="${iterStat.count}"></td>
+							<td th:text="${contact.mes}"></td>
+							<td><a th:href="@{/message/{id}/edit(id=${contact.id})}"><span
+									class="glyphicon glyphicon-pencil"></span></a></td>
+							<td><a th:href="@{/message/{id}/delete(id=${contact.id})}"><span
+									class="glyphicon glyphicon-trash"></span></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</th:block>
+	</div>
+	<!-- /.container -->
+
+	<footer th:replace="layout :: footer"></footer>
+</body>
+</html>
